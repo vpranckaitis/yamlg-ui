@@ -1,0 +1,41 @@
+.row {
+	font-size: 0;
+}
+
+.square {
+	width: 50px;
+	height: 50px;
+	display: inline-block;
+}
+
+.checker {
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+}
+
+.checker.cpu {
+	display: inline-block;
+	background-color: green;
+}
+
+.checker.player {
+	display: inline-block;
+	background-color: red;
+}
+
+.row:nth-child(2n) > .square:nth-child(2n) {
+	background-color: white;
+}
+
+.row:nth-child(2n) > .square:nth-child(2n+1) {
+	background-color: black;
+}
+
+.row:nth-child(2n+1) > .square:nth-child(2n) {
+	background-color: black;
+}
+
+.row:nth-child(2n+1) > .square:nth-child(2n+1) {
+	background-color: white;
+}
