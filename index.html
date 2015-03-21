@@ -7,7 +7,7 @@
 <body ng-app="yamlg" ng-controller="yamlg-controller">
   <div ng-repeat="y in range(0, 7)" class="row">
     <div ng-repeat="x in range(0, 7)" class="square">
-      <div class="checker" ng-class="{cpu: getChecker(x, y) == '1', player: getChecker(x, y) == '2'}"></div>
+      <div class="checker" ng-click="selectChecker(x, y)" ng-class="{cpu: getChecker(x, y) == '1', player: getChecker(x, y) == '2', candidate: isCandidate(x, y), selected: isSelected(x, y)}"></div>
     </div>
   </div>
   <span ng-click="move()">move</span>
