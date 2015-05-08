@@ -8,8 +8,12 @@ myApp.controller('yamlg-controller', ['$scope', '$http', function ($scope, $http
   var boardHeight = 8
   var boardSize = boardWidth * boardHeight;
   $scope.selectedChecker = boardSize;
+  $scope.playerFirst = true;
+  $scope.gameId = -1;
+  $scope.board = '';
   
   $scope.availableMoves = new Array()
+  
   for (var i = 0; i < boardSize + 1; i++) {
 	  $scope.availableMoves[i] = new Array()
   }
@@ -21,7 +25,6 @@ myApp.controller('yamlg-controller', ['$scope', '$http', function ($scope, $http
     return input;
   };
   
-  $scope.board = '1111000011110000111100000000000000000000000022220000222200002222';
   $scope.getChecker = function(x, y) {
 	  if (typeof y === 'undefined') {
 		  return $scope.board[x];
@@ -47,7 +50,7 @@ myApp.controller('yamlg-controller', ['$scope', '$http', function ($scope, $http
 	  }
 	  $scope.board = t;
 	  
-	  $http.post('move/0', {board: $scope.board}).
+	  $http.post('game/' + $scope.gameId + '/move', {board: $scope.board}).
 	      success(function(data, status) {
 	              $scope.board = data.board;
 	              $scope.availableMoves = data.moves;
@@ -87,4 +90,30 @@ myApp.controller('yamlg-controller', ['$scope', '$http', function ($scope, $http
   $scope.coordToPos = function(x, y) {
 	  return y * boardWidth + x;
   };
+  
+  $scope.startGame = function() {
+	  $http.post('game', {playerFirst: $scope.playerFirst}).
+	      success(function(data, status) {
+	    	 $scope.board = data.board;
+	    	 $scope.gameId = data.gameId;
+	    	 $scope.availableMoves = data.moves;
+	    	 $scope.availableMoves[boardSize] = new Array(); 
+	      });
+  }
+  
+  window.signinCallback = function(authResult) {
+	  if (authResult['status']['signed_in']) {
+	    // Update the app to reflect a signed in user
+	    // Hide the sign-in button now that the user is authorized, for example:
+		  console.log(authResult);
+	    document.getElementById('signinButton').setAttribute('style', 'display: none');
+	  } else {
+	    // Update the app to reflect a signed out user
+	    // Possible error values:
+	    //   "user_signed_out" - User is signed-out
+	    //   "access_denied" - User denied access to your app
+	    //   "immediate_failed" - Could not automatically log in the user
+	    console.log('Sign-in state: ' + authResult['error']);
+	  }
+	}
 }]);

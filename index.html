@@ -2,6 +2,7 @@
 <head>
   <link rel="stylesheet" type="text/css" href="css/style.css">
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+  <script src="https://apis.google.com/js/client:platform.js" async defer></script>
   <script type="text/javascript" src="js/script.js"></script>
 </head>
 <body ng-app="yamlg" ng-controller="yamlg-controller">
@@ -10,8 +11,20 @@
       <div class="checker" ng-click="selectChecker(x, y)" ng-class="{cpu: getChecker(x, y) == '1', player: getChecker(x, y) == '2', candidate: isCandidate(x, y), selected: isSelected(x, y)}"></div>
     </div>
   </div>
+  <span ng-click="startGame()">start game</span>
   <span ng-click="move()">move</span>
-  <textarea type="text" ng-model="board" cols="8" rows="8"></textarea>
+  <textarea type="text" ng-model="board" cols="8" rows="1"></textarea>
   <span>Board size: {{ board.length }}</span>
+  
+  <span id="signinButton">
+    <span
+      class="g-signin"
+      data-callback="signinCallback"
+      data-clientid="1086148110914-rek3thg8d8f5vgvbimia3tm2pc0uum49.apps.googleusercontent.com"
+      data-cookiepolicy="single_host_origin"
+      data-scope="email">
+    </span>
+  </span>
+
 </body>
 </html>
