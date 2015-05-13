@@ -1,30 +1,55 @@
 <html>
 <head>
   <link rel="stylesheet" type="text/css" href="css/style.css">
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+  <script type="text/javascript" src="js/angular.js"></script>
+  <script type="text/javascript" src="js/angular-cookies.js"></script>
   <script src="https://apis.google.com/js/client:platform.js" async defer></script>
   <script type="text/javascript" src="js/script.js"></script>
 </head>
-<body ng-app="yamlg" ng-controller="yamlg-controller">
-  <div ng-repeat="y in range(0, 7)" class="row">
-    <div ng-repeat="x in range(0, 7)" class="square">
-      <div class="checker" ng-click="selectChecker(x, y)" ng-class="{cpu: getChecker(x, y) == '1', player: getChecker(x, y) == '2', candidate: isCandidate(x, y), selected: isSelected(x, y)}"></div>
+<body ng-app="yamlg" ng-controller="yamlg-controller" onload="restoreSession()">
+  <header>
+    <form ng-submit="startGame()">
+      <select ng-model="playerFirst" required>
+        <option value="true">Player starts</option>
+        <option value="false">CPU starts</option>
+      </select>
+      <select required ng-model="difficulty" ng-init="getDifficulties()">
+        <option value="">Select difficulty</option>
+        <option ng-repeat="diff in difficulties" ng-value="{{diff}}">{{diff}}</option>
+      </select>
+ 	  <button type="submit">Start game</button>
+ 	</form> |
+ 	<button ng-click="getStatistics()" ng-show="loggedIn">statistics</button> |
+    <span id="login">
+      <span id="signinButton" ng-hide="loggedIn" >
+	    <span
+	      class="g-signin"
+	      data-callback="signinCallback"
+	      data-clientid="1086148110914-rek3thg8d8f5vgvbimia3tm2pc0uum49.apps.googleusercontent.com"
+	      data-cookiepolicy="single_host_origin"
+	      data-scope="email">
+	    </span>
+	  </span>
+	  <span id="signinStatus" ng-show="loggedIn">
+	    {{email}} <button ng-click="logout()">Log out</button>
+	  </span>
+    </span>
+  </header>
+  <div id="container">
+    <div id="board">
+	  <div ng-repeat="y in range(0, 7)" class="row">
+	    <div ng-repeat="x in range(0, 7)" class="square">
+	      <div class="checker" ng-click="selectChecker(x, y)" ng-class="{cpu: getChecker(x, y) == '1', player: getChecker(x, y) == '2', candidate: isCandidate(x, y), selected: isSelected(x, y)}"></div>
+	    </div>
+      </div>
+    </div>
+    <div id="side">
+      <div ng-show="statistics">
+        Average moves: {{statistics.averageMoves}} <br />
+        Wins: {{statistics.wins}} <br />
+        Loses: {{statistics.loses}}
+      </div>
     </div>
   </div>
-  <span ng-click="startGame()">start game</span>
-  <span ng-click="move()">move</span>
-  <textarea type="text" ng-model="board" cols="8" rows="1"></textarea>
-  <span>Board size: {{ board.length }}</span>
-  
-  <span id="signinButton">
-    <span
-      class="g-signin"
-      data-callback="signinCallback"
-      data-clientid="1086148110914-rek3thg8d8f5vgvbimia3tm2pc0uum49.apps.googleusercontent.com"
-      data-cookiepolicy="single_host_origin"
-      data-scope="email">
-    </span>
-  </span>
-
 </body>
 </html>

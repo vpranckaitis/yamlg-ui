@@ -1,3 +1,10 @@
+html, body {
+	margin: 0;
+	padding: 0;
+	font-family: 'Calibri', sans-serif;
+}
+
+
 .row {
 	font-size: 0;
 }
@@ -26,12 +33,12 @@
 }
 
 .checker.player.selected {
-	border: 2px dotted orange;
+	border: 5px dotted orange;
 }
 
 .checker.candidate {
 	background-color: transparent;
-	border: 2px dotted orange;
+	border: 5px dotted orange;
 }
 
 .row:nth-child(2n) > .square:nth-child(2n) {
@@ -48,4 +55,29 @@
 
 .row:nth-child(2n+1) > .square:nth-child(2n+1) {
 	background-color: white;
+}
+
+form {
+	display: inline-block;
+}
+
+header, #container {
+	margin: 25px;
+	padding: 25px;
+	border: 1px solid #eeeeee;
+}
+
+header>* {
+	vertical-align: top;
+}
+
+form {
+	margin: 0;
+	padding: 0;
+}
+
+#board, #side {
+	display: inline-block;
+	margin-right: 25px;
+	vertical-align: top;
 }

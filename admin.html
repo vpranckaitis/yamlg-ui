@@ -1,0 +1,99 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="css/admin-style.css">
+  <link rel="stylesheet" type="text/css" href="css/animation.css">
+  <script type="text/javascript" src="js/angular.js"></script>
+  <script type="text/javascript" src="js/angular-cookies.js"></script>
+  <script type="text/javascript" src="js/admin-script.js"></script>
+</head>
+<body ng-app="yamlg" ng-controller="yamlg-controller" onload="getMetadatas(-1, 20)" ng-init="getBots()">
+  <div id="message-box" class="fade-out">
+    <div>
+  	  {{message}}
+  	</div>
+  </div>
+  <div id="games">
+    <div id="game-list">
+      <table>
+        <tr>
+          <th><input id="multicheck" type="checkbox" ng-click="checkAll()" ng-checked="multiChecked()"/></th>
+          <th>Id</th>
+        	<th>Started</th>
+        	<th>Winner</th>
+        	<th>Turns</th>
+        </tr>
+        <tr ng-repeat="game in gameMetadatas">
+          <td><input type="checkbox" ng-model="learn[game.id]" ng-change="updateMulti()" /></td>
+        	<td ng-click="getGame(game.id)">{{game.id}}</td>
+      	  <td ng-click="getGame(game.id)">{{game.botGame ? 'cpu' + game.started : (game.started == 1 ? 'cpu' : 'player')}}</td>
+        	<td ng-click="getGame(game.id)">{{game.botGame ? (game.winner == 0 ? '-' : 'cpu' + game.started) : (game.winner == 1 ? 'cpu' : (game.winner == 2 ? 'player' : '–'))}}</td>
+        	<td ng-click="getGame(game.id)">{{game.turns}}</td>
+        </tr>
+      </table>
+      <button ng-click="getPreviousPage()" ng-disabled="hasPrevious == false">Previous</button>
+      <button ng-click="getNextPage()" ng-disabled="hasNext == false">Next</button>
+      <form ng-submit="sendLearn()">
+        <select ng-options="bot.id as bot.name for bot in bots" ng-model="botToTeach" required></select>
+        <button ng-disabled="!hasSelected()">Learn</button>
+      </form>
+    </div>
+
+    <div id="game-board">
+	  <div ng-repeat="y in range(0, 7)" class="row">
+	    <div ng-repeat="x in range(0, 7)" class="square">
+  	    <div class="checker" ng-class="{cpu: getChecker(x, y) == '1', player: getChecker(x, y) == '2'}"></div>
+	    </div>
+      </div>
+      <button ng-disabled="currentTurn == 0" ng-click="changeTurn(-1)">Previous</button>
+      <button ng-disabled="currentTurn >= boards.length - 1" ng-click="changeTurn(1)">Next</button>
+      <span>{{currentTurn + 1}} / {{boards.length}}</span>
+    </div>
+  </div>
+  
+  
+  <div id="self-play">
+    Self play: 
+    <form ng-submit="selfPlay()">
+      <select ng-options="bot.id as bot.name for bot in bots" ng-model="bot1" required></select>
+      <select ng-options="bot.id as bot.name for bot in bots" ng-model="bot2" required></select>
+      <input type="number" ng-model="gameCount" required />
+      <button>Play</button>
+    </form>
+  </div>
+  
+  <div id="bots">
+    Bots <br />
+  	<table>
+      <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>IP</th>
+      	<th>Port</th>
+      	<th>Difficulty</th>
+      	<th>Alive</th>
+      	<th></th>
+      </tr>
+      <tr ng-repeat="bot in bots">
+      	<td>{{bot.id}}</td>
+      	<td><input type="text" ng-model="bot.name" required /></td>
+      	<td><input type="text" ng-model="bot.ip" pattern="\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}" required /></td>
+      	<td><input type="number" ng-model="bot.port" required /></td>
+      	<td><input type="number" ng-model="bot.difficulty" required /></td>
+      	<td><input type="checkbox" ng-model="bot.alive" /></td>
+      	<td><button ng-click="updateBot(bot)">Save</button></td>
+      </tr>
+      <tr>
+      	<td></td>
+      	<td><input type="text" ng-model="botForm.name" required /></td>
+        <td><input type="text" ng-model="botForm.ip" pattern="\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}" required /></td>
+      	<td><input type="number" ng-model="botForm.port" required /></td>
+      	<td><input type="number" ng-model="botForm.difficulty" required /></td>
+      	<td><input type="checkbox" ng-model="botForm.alive" /></td>
+      	<td><button ng-click="createBot()">Create</button></td>
+      </tr>
+    </table>
+  </div>
+
+</body>
+</html>

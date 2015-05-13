@@ -1,0 +1,58 @@
+table {
+	border-collapse: collapse;
+}
+
+tr:nth-child(2n) {
+  	background-color: #eeeeee;
+}
+
+tr:nth-child(n+2):hover {
+  	background-color: #ffff00;
+}
+
+td, th {
+	margin: 0;
+	border: 0;
+	padding: 0.25em 1em;
+}
+
+#game-list, #game-board {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+#game-list {
+	margin-right: 25px;
+} 
+
+#self-play, #bots, #games {
+	margin: 25px;
+}
+
+#self-play, #bots, #games {
+	padding: 25px;
+	border: 1px solid #eeeeee;
+}
+
+form {
+	margin: 0;
+	padding: 0;
+}
+
+#message-box {
+	width: 200px;
+	height: 50px;
+	vertical-align: middle;
+	position: fixed;
+	top: 25px;
+	right: 25px;
+	background-color: #54E943;
+	border-radius: 10px;
+}
+
+#message-box > div {
+	position: static;
+	display: inline-block;
+	float: center;
+	margin: 15px 25px;
+}
